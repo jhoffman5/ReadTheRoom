@@ -41,3 +41,7 @@ Even further down the line if-all-goes-well advancement:  each user will display
 Stretch-goals:
 Changing passwords
 A “close room” button (instead it will close when nobody is in the room)
+
+# To-Do List
+#### Sessions (make sure everyone has a unique id when logged in)
+#### Socket.io (get working chat system)
