@@ -43,7 +43,7 @@ class DBAbstraction {
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
             const db = client.db('ReadTheRoomDB');
 
-            games = await db.collection('Users').find().toArray();
+            users = await db.collection('Users').find().toArray();
             client.close();
         } catch(err){
             console.log('There was a problem finding users');
