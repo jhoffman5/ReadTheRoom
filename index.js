@@ -19,6 +19,12 @@ app.use(express.static('public'));
 
 app.use(session({ secret: 'keyboard-cat', cookie: { maxAge: 600000 } }));
 
+app.get('/', async (req, res) => {
+    res.render('loginform');
+});
+
+
+
 app.use((req, res) => {
     res.status(404).send(`<h2>Oopsie daisy!</h2><p>Sorry ${req.url} cannot be found.</p>`);
 });
