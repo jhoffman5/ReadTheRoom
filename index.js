@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 var numUsers = 0;
 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('index');
 })
 
 io.on('connection', (socket) => {
@@ -36,10 +36,11 @@ io.on('connection', (socket) => {
         io.sockets.emit('chat', data);
     });
 
-    socket.on('disconnect', function(){
-        console.log('user has disconnected');
-        io.sockets.emit('disconnect');
-    });
+    // socket.on('disconnect', (data) => {
+    //     io.sockets.emit('user left', {
+    //         username: username.value
+    //     });
+    // });
 });
 
 app.use((req, res) => {

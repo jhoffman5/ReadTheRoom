@@ -12,11 +12,11 @@ button.addEventListener('click', function(){
     });
 });
 
-socket.on('chat', function(data){
-    output.innerHTML += '<p><strong>' + data.username + ':</strong>' + data.message + "</p";
+socket.on('chat', (data) => {
+    output.innerHTML += '<p><strong>' + data.username + ':</strong>' + data.message + '</p>';
 })
 
-socket.on('disconnect', function(){
-    
-    output.innerHTML += '<p>' + "disconnected!" + '</p';
-})
+// socket.on('disconnect', (data) => {
+//     output.innerHTML += '<p>' + data.username + '</p>';
+// });
+
