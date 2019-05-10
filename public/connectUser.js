@@ -15,3 +15,8 @@ button.addEventListener('click', function(){
 socket.on('chat', function(data){
     output.innerHTML += '<p><strong>' + data.username + ':</strong>' + data.message + "</p";
 })
+
+socket.on('disconnect', function(){
+    
+    output.innerHTML += '<p>' + "disconnected!" + '</p';
+})
