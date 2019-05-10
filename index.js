@@ -20,9 +20,8 @@ app.use(express.static('public'));
 app.use(session({ secret: 'keyboard-cat', cookie: { maxAge: 600000 } }));
 
 app.get('/', async (req, res) => {
-    res.render('loginform');
+    res.render('login');
 });
-
 
 
 app.use((req, res) => {
