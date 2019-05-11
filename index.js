@@ -20,9 +20,21 @@ app.use(express.static('public'));
 app.use(session({ secret: 'keyboard-cat', cookie: { maxAge: 600000 } }));
 
 app.get('/', async (req, res) => {
-    res.render('login');
+    res.sendFile('public/login.html', {root: __dirname});
 });
 
+app.post('/newUser', async (req, res) => {
+    try{
+        const username = req.body.NewUsername;
+        const password = req.body.NewPassword;
+        
+        await db.createUser(username, password);
+        
+        //assign username/user's id to session
+    } catch(err) {
+        console.log(err);
+    }
+});
 
 app.use((req, res) => {
     res.status(404).send(`<h2>Oopsie daisy!</h2><p>Sorry ${req.url} cannot be found.</p>`);
