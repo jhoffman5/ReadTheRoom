@@ -53,5 +53,22 @@ class DBAbstraction {
         return users;
     }
 
+    async findUser(findThisUsername){
+        let user = null;
+        try{
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            user = await db.collection('Users').findOne({"username":findThisUsername});
+            console.log(user.username);
+            
+            client.close();
+        } catch(err){
+            console.log('There was a problem finding this user');
+            throw err;
+        }
+        return user
+    }
+
 }
 module.exports = DBAbstraction;

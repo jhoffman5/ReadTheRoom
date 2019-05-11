@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const socket = require('socket.io');
 const session = require('express-session');
+const passwordHash = require('password-hash');
 
 const DBAbstraction = require('./DBAbstraction');
 const db = new DBAbstraction('mongodb://localhost:27017');
@@ -25,10 +26,16 @@ app.get('/', async (req, res) => {
 
 app.post('/newUser', async (req, res) => {
     try{
-        const username = req.body.NewUsername;
-        const password = req.body.NewPassword;
-        
-        await db.createUser(username, password);
+        var username = req.body.NewUsername;
+        var password = req.body.NewPassword;
+        password = passwordHash.generate(password);
+
+        //not stopping them from taking an existing username yet :/
+        if(db.findUser(username) != null){
+            await db.createUser(username, password);
+        } else{
+            //notify user that this is already taken
+        }
         
         //assign username/user's id to session
     } catch(err) {

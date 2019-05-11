@@ -54,7 +54,7 @@
         </div>
         <div>
           <label for="loginPassword"> Password:  </label>
-          <input type="text" class="form-control" name="loginPassword" id="loginPassword">
+          <input type="password" class="form-control" name="loginPassword" id="loginPassword">
         </div>
           <button id="login" class="btn btn-primary"> Login </button>
       </form>
@@ -67,9 +67,9 @@
         </div>
         <div>
             <label for="NewPassword"> Create Password: </label>
-            <input type="text" class="form-control" name="NewPassword" id="NewPassword">
+            <input type="password" class="form-control" name="NewPassword" id="NewPassword">
         </div>
-          <button id="createUser" class="btn btn-primary"> Create </button>
+          <button id="createUser" onclick="submit(createNewUser)" class="btn btn-primary"> Create </button>
         </form>
     </div>
   </div>
@@ -101,7 +101,7 @@
 
       //I dont think this is actually necessary
       if(response.ok) {
-        //just making sure it worked
+        
       } else {
         console.log("Error with something in sending a new user");
       }
@@ -111,6 +111,10 @@
     }
   });
 
+
+  function submit(formName) {
+    document.getElementById(formName).reset();
+  }
 </script>
 
 </html>
