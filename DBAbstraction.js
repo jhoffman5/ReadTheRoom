@@ -69,5 +69,19 @@ class DBAbstraction {
         return user;
     }
 
+    async findUserWithPass(username, password){
+        let user = null;
+        try{
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            user = await db.collection('Users').findOne({"username": username, "password": password});
+        } catch(err){
+            console.log('There was an error with the database while logging in');
+            throw err;
+        }
+        return user;
+    }
+
 }
 module.exports = DBAbstraction;

@@ -56,7 +56,7 @@
           <label for="loginPassword"> Password:  </label>
           <input type="password" class="form-control" name="loginPassword" id="loginPassword">
         </div>
-          <button id="login" class="btn btn-primary"> Login </button>
+          <button id="loginButton" onclick="submit(login)" class="btn btn-primary"> Login </button>
       </form>
     </div>
     <div class="column" style="background-color: rgba(255, 0, 0, .25)">
@@ -99,18 +99,51 @@
 
       const response = await fetch("/newUser", fetchConfigData);
 
-      //I dont think this is actually necessary
-      //if(response.ok) {
+      //just checks if everything is ok
+      if(response.ok) {
         
-      //} else {
-      //  console.log("Error with something in sending a new user");
-      //}
-      //
+      } else {
+        console.log("Error with something in sending a new user");
+      }
+      
     } catch (err) {
       console.log(`Error: ${err}`);
     }
   });
 
+  document.getElementById("loginButton").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const loginUsername = document.getElementById("loginUsername").value;
+      const loginPassword = document.getElementById("loginPassword").value;
+      
+      const userData = {
+        loginUsername: loginUsername,
+        loginPassword: loginPassword
+      };
+
+      const fetchConfigData = {
+          method: "POST",
+          body: JSON.stringify(userData), 
+          headers: {
+              "Content-Type": "application/json"
+          }
+      };
+
+      const response = await fetch("/loginUser", fetchConfigData);
+
+      //just checks if everything is ok
+      if(response.ok) {
+        
+      } else {
+        console.log("Error with something in sending a new user");
+      }
+      
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
+  });
 
   function submit(formName) {
     document.getElementById(formName).reset();

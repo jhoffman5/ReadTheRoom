@@ -30,21 +30,48 @@ app.post('/newUser', async (req, res) => {
         var password = req.body.NewPassword;
         password = passwordHash.generate(password);
 
-        db.findUser(username).then(async function(user){
-            if(!user){ //if no user with than name exists. put this user into the db
-                await db.createUser(username, password);
-            }
-            else{
-                //dont add user
-            }
-            res.send(user)
+        db.findUser(username)
+            .then(async function(user){
+                if(!user){ //if no user with than name exists. put this user into the db
+                    await db.createUser(username, password);
+                }
+                else{
+                    //dont add user
+                }
+                res.send(user);
         }).catch(function(err) {
-            res.send({error: err})
+            res.send({error: err});
         })
-        
         //assign username/user's id to session
-        
+
     } catch(err) {
+        console.log(err);
+    }
+});
+
+app.post('/loginUser', async (req, res) => {
+    try{
+        var username = req.body.loginUsername;
+        var password = req.body.loginPassword;
+        password = passwordHash.generate(password);
+
+        db.findUserWithPass(username, password) 
+            .then(async (user) =>{
+                if(!user){
+                    //login
+                    console.log(`Successful login with user: ${user.username}`);
+                }
+                else{
+                    //failed login
+                    console.log(`Failed to login with user: ${user.username}`);
+                }
+        }).catch((err) => {
+            res.send({error: err});
+        })
+
+        //set session username to the user.username
+
+    } catch (err) {
         console.log(err);
     }
 });
