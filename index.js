@@ -30,14 +30,20 @@ app.post('/newUser', async (req, res) => {
         var password = req.body.NewPassword;
         password = passwordHash.generate(password);
 
-        //not stopping them from taking an existing username yet :/
-        if(db.findUser(username) != null){
-            await db.createUser(username, password);
-        } else{
-            //notify user that this is already taken
-        }
+        db.findUser(username).then(async function(user){
+            if(!user){ //if no user with than name exists. put this user into the db
+                await db.createUser(username, password);
+            }
+            else{
+                //dont add user
+            }
+            res.send(user)
+        }).catch(function(err) {
+            res.send({error: err})
+        })
         
         //assign username/user's id to session
+        
     } catch(err) {
         console.log(err);
     }

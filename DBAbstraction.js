@@ -59,15 +59,14 @@ class DBAbstraction {
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
             const db = client.db('ReadTheRoomDB');
 
-            user = await db.collection('Users').findOne({"username":findThisUsername});
-            console.log(user.username);
-            
+            user = await db.collection('Users').findOne({"username": findThisUsername});
+
             client.close();
         } catch(err){
             console.log('There was a problem finding this user');
             throw err;
         }
-        return user
+        return user;
     }
 
 }
