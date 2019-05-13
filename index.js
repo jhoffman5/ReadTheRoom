@@ -23,11 +23,13 @@ app.use(express.static('public'));
 app.use(session({ secret: 'keyboard-cat', cookie: { maxAge: 600000 } }));
 
 app.get('/', async (req, res) => {
-    res.sendFile('public/login.html', {root: __dirname});
+    res.render('login');
 });
 
 app.get('/home', async (req, res) => {
-    res.sendFile('public/home.html', {root: __dirname});
+    //console.log(req.session.username);
+    const username = req.session.username;
+    res.render('home', {username:username});
 });
 
 app.post('/newUser', async (req, res) => {
@@ -42,12 +44,15 @@ app.post('/newUser', async (req, res) => {
                     await db.createUser(username, password);
                     //assign username/user's id to session
                     req.session.username = username;
+                    //res.send(req.session.username);
+                    res.redirect('/home');
                 }
                 else{
                     //dont add user
                     //redirect to /
+                    res.redirect('/');
                 }
-                res.send(user);
+                //res.send(user);
         }).catch(function(err) {
             res.send({error: err});
         })
@@ -71,15 +76,18 @@ app.post('/loginUser', async (req, res) => {
                         console.log(`Successful login with user: ${user.username}`);
                         //set session username to the user.username
                         //res.render('public/home.html');
-                        res.sendFile('public/home.html', {root: __dirname});
+                        req.session.username = user.username;
+                        res.redirect('/home');
                     } else{
                         //go back to /
-                        res.redirect("/");
+
+                        res.redirect('/');
                     }
                 }
                 else{
                     //failed login
                     console.log(`Failed to login with user: ${user.username}`);
+                    res.redirect('/');
                 }
         }).catch((err) => {
             res.send({error: err});
