@@ -67,7 +67,8 @@ app.post('/loginUser', async (req, res) => {
                     if(passwordHash.verify(password, user.password)){
                         console.log(`Successful login with user: ${user.username}`);
                         //set session username to the user.username
-                        res.redirect('../home');
+                        //res.render('public/home.html');
+                        res.sendFile('public/home.html', {root: __dirname});
                     } else{
                         //go back to /
                         res.redirect("/");
