@@ -32,6 +32,12 @@ app.get('/home', async (req, res) => {
     res.render('home', {username:username});
 });
 
+app.get('/room', async (req, res) => {
+    console.log('Entering room...');
+    const currentRoom = req.session.currentRoom;
+    res.render('room', {roomName: currentRoom});
+});
+
 app.post('/newUser', async (req, res) => {
     try{
         var username = req.body.NewUsername;
@@ -89,10 +95,38 @@ app.post('/loginUser', async (req, res) => {
                     console.log(`Failed to login with user: ${user.username}`);
                     res.redirect('/');
                 }
-        }).catch((err) => {
-            res.send({error: err});
-        })
+            }).catch((err) => {
+                res.send({error: err});
+            })
 
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post('/newRoom', async (req, res) => {
+    try {
+        const roomName = req.body.roomName;
+        //console.log(roomName);
+        db.getThisRoom(roomName)
+            .then(async function(room){
+                if(!room){
+                    await db.createRoom(roomName);
+                    req.session.currentRoom = roomName;
+                    console.log(req.session.currentRoom);
+                    res.redirect('/room');
+                } 
+                else{
+                    req.session.currentRoom = roomName;
+                    console.log(req.session.currentRoom);
+                    console.log('Room Already Existed... Redirecting...');
+                    //alert('Room Already Existed... Redirecting...');
+                    res.redirect('/room');
+                }
+            }).catch(function(err) {
+                res.send({error:err});
+            })
+            
     } catch (err) {
         console.log(err);
     }

@@ -1,2 +1,23 @@
 <hr>
 <center><h1>@ {{this.username}}</h1></center>
+<div class="row">
+    <div class="col-md-6" style="background-color: rgba(0, 0, 225, .25);">
+        <h2>
+            Choose Existing Room
+        </h2>
+        <form>
+            <ul class="dropdown-menu" role="menu">
+                <li></li>
+            </ul>
+        </form>
+    </div>
+    <div class="col-md-6" style="background-color: rgba(255, 0, 0, .25)">
+        <form id="createNewRoom" action="/newRoom" method="POST">
+            <div>
+                <label for="roomName">Enter New Room Name:</label>
+                <input type="text" class="form-control" name="roomName" id="roomName">
+            </div>
+            <button id="newRoomButton" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
