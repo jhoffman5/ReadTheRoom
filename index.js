@@ -30,17 +30,26 @@ app.get('/', (req, res) => {
     res.render('index');
 })
 
+var people = {};
 io.on('connection', (socket) => {
     console.log('New user connected');
-    socket.on('chat', function(data){
+
+    socket.on("join", function(name){
+		people[socket.id] = name;
+		io.sockets.emit("update", name + " has joined the server.")
+		io.sockets.emit("update-people", people);
+    });
+    
+    socket.on('chat', function(data) {
         io.sockets.emit('chat', data);
     });
 
-    // socket.on('disconnect', (data) => {
-    //     io.sockets.emit('user left', {
-    //         username: username.value
-    //     });
-    // });
+    socket.on('disconnect', () => {
+        console.log(people[socket.id] + ' disconnected');
+        io.sockets.emit('user left', {
+            username: people[socket.id]
+        });
+    });
 });
 
 app.use((req, res) => {
