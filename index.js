@@ -24,25 +24,29 @@ app.get('/', async (req, res) => {
     res.sendFile('public/login.html', {root: __dirname});
 });
 
+app.get('/home', async (req, res) => {
+    res.sendFile('public/home.html', {root: __dirname});
+});
+
 app.post('/newUser', async (req, res) => {
     try{
         var username = req.body.NewUsername;
         var password = req.body.NewPassword;
-        //password = passwordHash.generate(password);
 
         db.findUser(username)
             .then(async function(user){
                 if(!user){ //if no user with than name exists. put this user into the db
                     await db.createUser(username, password);
+                    //assign username/user's id to session
                 }
                 else{
                     //dont add user
+                    //redirect to /
                 }
                 res.send(user);
         }).catch(function(err) {
             res.send({error: err});
         })
-        //assign username/user's id to session
 
     } catch(err) {
         console.log(err);
@@ -61,10 +65,11 @@ app.post('/loginUser', async (req, res) => {
                     //login
                     if(passwordHash.verify(password, user.password)){
                         console.log(`Successful login with user: ${user.username}`);
-                        
-
+                        //set session username to the user.username
+                        res.redirect('/home');
                     } else{
-                        
+                        //go back to /
+                        res.redirect("/");
                     }
                 }
                 else{
@@ -74,8 +79,6 @@ app.post('/loginUser', async (req, res) => {
         }).catch((err) => {
             res.send({error: err});
         })
-
-        //set session username to the user.username
 
     } catch (err) {
         console.log(err);

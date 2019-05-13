@@ -75,10 +75,8 @@ class DBAbstraction {
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
             const db = client.db('ReadTheRoomDB');
 
+            user = await db.collection('Users').findOne({"username": username});
 
-            user = await db.collection('Users').findOne({"username": username});//, "password": password});
-            //console.log(user)
-            //console.log(password);
         } catch(err){
             console.log('There was an error with the database while logging in');
             throw err;
