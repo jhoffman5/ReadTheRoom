@@ -39,6 +39,7 @@ app.post('/newUser', async (req, res) => {
                 if(!user){ //if no user with than name exists. put this user into the db
                     await db.createUser(username, password);
                     //assign username/user's id to session
+                    req.session.username = username;
                 }
                 else{
                     //dont add user
