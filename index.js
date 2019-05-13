@@ -12,12 +12,14 @@ const db = new DBAbstraction('mongodb://localhost:27017');
 
 const app = express();
 
+const handlebars = require('express-handlebars').create({defaultLayout : 'main'});
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
+
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(express.static('public'));
-
 app.use(session({ secret: 'keyboard-cat', cookie: { maxAge: 600000 } }));
 
 app.get('/', async (req, res) => {
