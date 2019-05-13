@@ -32,6 +32,7 @@ app.post('/newUser', async (req, res) => {
     try{
         var username = req.body.NewUsername;
         var password = req.body.NewPassword;
+        password = passwordHash.generate(password);
 
         db.findUser(username)
             .then(async function(user){
@@ -66,7 +67,7 @@ app.post('/loginUser', async (req, res) => {
                     if(passwordHash.verify(password, user.password)){
                         console.log(`Successful login with user: ${user.username}`);
                         //set session username to the user.username
-                        res.redirect('/home');
+                        res.redirect('../home');
                     } else{
                         //go back to /
                         res.redirect("/");
