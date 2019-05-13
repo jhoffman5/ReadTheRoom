@@ -29,29 +29,15 @@ app.use(bodyParser.json());
 
 var numUsers = 0;
 
-app.get('/socket', (req, res) => {
-    res.render('index');
-})
+// app.get('/', (req, res) => {
+//     res.render('socket');
+// })
 
-var people = {};
 io.on('connection', (socket) => {
     console.log('New user connected');
-
-    socket.on("join", function(name){
-		people[socket.id] = name;
-		io.sockets.emit("update", name + " has joined the server.")
-		io.sockets.emit("update-people", people);
-    });
     
     socket.on('chat', function(data) {
         io.sockets.emit('chat', data);
-    });
-
-    socket.on('disconnect', () => {
-        console.log(people[socket.id] + ' disconnected');
-        io.sockets.emit('user left', {
-            username: people[socket.id]
-        });
     });
 });
 
@@ -62,10 +48,10 @@ app.get('/', async (req, res) => {
     res.render('login');
 });
 
-app.get('/home', async (req, res) => {
+app.get('/socket', async (req, res) => {
     //console.log(req.session.username);
     const username = req.session.username;
-    res.render('home', {username:username});
+    res.render('socket', {username:username});
 });
 
 app.post('/newUser', async (req, res) => {
@@ -81,7 +67,7 @@ app.post('/newUser', async (req, res) => {
                     //assign username/user's id to session
                     req.session.username = username;
                     //res.send(req.session.username);
-                    res.redirect('/home');
+                    res.redirect('/socket');
                 }
                 else{
                     //dont add user
