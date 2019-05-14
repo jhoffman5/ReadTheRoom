@@ -27,9 +27,9 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/home', async (req, res) => {
-    //console.log(req.session.username);
     const username = req.session.username;
-    res.render('home', {username:username});
+    const allRooms = await db.getAllRooms();
+    res.render('home', {username:username, allRooms:allRooms});
 });
 
 app.get('/room', async (req, res) => {
@@ -50,7 +50,6 @@ app.post('/newUser', async (req, res) => {
                     await db.createUser(username, password);
                     //assign username/user's id to session
                     req.session.username = username;
-                    //res.send(req.session.username);
                     res.redirect('/home');
                 }
                 else{
@@ -81,12 +80,10 @@ app.post('/loginUser', async (req, res) => {
                     if(passwordHash.verify(password, user.password)){
                         console.log(`Successful login with user: ${user.username}`);
                         //set session username to the user.username
-                        //res.render('public/home.html');
                         req.session.username = user.username;
                         res.redirect('/home');
                     } else{
                         //go back to /
-
                         res.redirect('/');
                     }
                 }
@@ -127,6 +124,16 @@ app.post('/newRoom', async (req, res) => {
                 res.send({error:err});
             })
             
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post('/existingRoom', async (req, res) => {
+    try {
+        const roomName = req.body.roomName;
+        req.session.currentRoom = roomName;
+        res.redirect('/room');
     } catch (err) {
         console.log(err);
     }
