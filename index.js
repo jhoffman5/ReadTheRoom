@@ -54,7 +54,7 @@ app.get('/home', async (req, res) => {
     res.render('home', {username:username, allRooms:allRooms});
 });
 
-app.get('/room', async (req, res) => {
+app.get('/room/:roomName', async (req, res) => {
     console.log('Entering room...');
     const username = req.session.username;
     const currentRoom = req.session.currentRoom;
@@ -135,14 +135,14 @@ app.post('/newRoom', async (req, res) => {
                     await db.createRoom(roomName);
                     req.session.currentRoom = roomName;
                     console.log(req.session.currentRoom);
-                    res.redirect('/room');
+                    res.redirect(`/room/${roomName}`);
                 } 
                 else{
                     req.session.currentRoom = roomName;
                     console.log(req.session.currentRoom);
                     console.log('Room Already Existed... Redirecting...');
                     //alert('Room Already Existed... Redirecting...');
-                    res.redirect('/room');
+                    res.redirect(`/room/${roomName}`);
                 }
             }).catch(function(err) {
                 res.send({error:err});
@@ -157,7 +157,7 @@ app.post('/existingRoom', async (req, res) => {
     try {
         const roomName = req.body.roomName;
         req.session.currentRoom = roomName;
-        res.redirect('/room');
+        res.redirect(`/room/${roomName}`);
     } catch (err) {
         console.log(err);
     }
