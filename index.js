@@ -56,8 +56,9 @@ app.get('/home', async (req, res) => {
 
 app.get('/room', async (req, res) => {
     console.log('Entering room...');
+    const username = req.session.username;
     const currentRoom = req.session.currentRoom;
-    res.render('socket', {roomName: currentRoom});
+    res.render('socket', {roomName: currentRoom, username:username});
 
 });
 
