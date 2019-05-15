@@ -60,7 +60,6 @@ class DBAbstraction {
             const db = client.db('ReadTheRoomDB');
 
             user = await db.collection('Users').findOne({"username": findThisUsername});
-
             client.close();
         } catch(err){
             console.log('There was a problem finding this user');
@@ -76,7 +75,7 @@ class DBAbstraction {
             const db = client.db('ReadTheRoomDB');
 
             user = await db.collection('Users').findOne({"username": username});
-
+            client.close();
         } catch(err){
             console.log('There was an error with the database while logging in');
             throw err;
@@ -84,5 +83,52 @@ class DBAbstraction {
         return user;
     }
 
+    async createRoom(roomName) {
+        try{
+            const newRoom ={
+                roomName: roomName
+            };
+
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            await db.collection('Rooms').insertOne(newRoom);
+            client.close();
+        } catch (err) {
+            console.log('There was an error creating a new room');
+            throw err;
+        }
+    }
+
+    async getAllRooms() {
+        let allRooms = [];
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            allRooms = await db.collection('Rooms').find().toArray();
+            client.close();
+        } catch (err) {
+            console.log('There was an error getting all rooms');
+            throw err;
+        }
+
+        return allRooms;
+    }
+
+    async getThisRoom(roomName) {
+        let room = null;
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            room = await db.collection('Rooms').findOne({'roomName':roomName});
+            client.close();
+        } catch (err) {
+            console.log(`There was a problem getting room: ${roomName}`);
+            throw err;
+        }
+        return room;
+    }
 }
 module.exports = DBAbstraction;
