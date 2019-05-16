@@ -33,9 +33,25 @@ var numUsers = 0;
 //     res.render('socket');
 // })
 
+var rooms = db.getAllRooms();
+
+console.log(rooms);
 io.on('connection', (socket) => {
+    
     console.log('New user connected');
     
+    socket.join('room 237', () => {
+        //let rooms = Object.keys(socket.rooms);
+        console.log(rooms); // [ <socket.id>, 'room 237' ]
+        io.to('room 237').emit('a new user has joined the room'); // broadcast to everyone in the room
+    });
+
+    socket.join('room 238', () => {
+        //let rooms = Object.keys(socket.rooms);
+        console.log(rooms); // [ <socket.id>, 'room 237' ]
+        io.to('room 237').emit('a new user has joined the room'); // broadcast to everyone in the room
+    });
+
     socket.on('chat', function(data) {
         io.sockets.emit('chat', data);
     });
