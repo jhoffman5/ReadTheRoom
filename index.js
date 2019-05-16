@@ -108,9 +108,14 @@ app.post('/loginUser', async (req, res) => {
         var password = req.body.loginPassword;
 
 
-        db.findUserWithPass(username, password) 
+        db.findUser(username) 
             .then(async (user) =>{
-                if(user){
+                if(!user){
+                    //no user with login
+                    console.log(`Failed to login with user: ${username}`);
+                    res.redirect('/');
+                }
+                else{
                     //login
                     if(passwordHash.verify(password, user.password)){
                         console.log(`Successful login with user: ${user.username}`);
@@ -121,11 +126,6 @@ app.post('/loginUser', async (req, res) => {
                         //go back to /
                         res.redirect('/');
                     }
-                }
-                else{
-                    //failed login
-                    console.log(`Failed to login with user: ${user.username}`);
-                    res.redirect('/');
                 }
             }).catch((err) => {
                 res.send({error: err});
