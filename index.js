@@ -42,12 +42,9 @@ var numUsers = 0;
 io.on('connection', (socket) => {
     
     console.log('New user connected');
-    socket.on("joinRoom", (data) => {
-        console.log(data.roomName);
+    socket.on("join_room", (data) => {
         socket.join(data.roomName);
-        let rooms = io.sockets.adapter.rooms;
-        console.log(rooms); // [ <socket.id>, 'room 237' ]
-        io.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
+        socket.broadcast.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
     });
 
     socket.on('chat', function(data) {

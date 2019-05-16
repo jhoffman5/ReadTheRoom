@@ -107,7 +107,7 @@ class DBAbstraction {
             const db = client.db('ReadTheRoomDB');
 
             allRooms = await db.collection('Rooms').find().toArray();
-            console.log(allRooms);
+            //console.log(allRooms);
             client.close();
         } catch (err) {
             console.log('There was an error getting all rooms');

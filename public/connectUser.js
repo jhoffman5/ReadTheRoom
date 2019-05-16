@@ -6,7 +6,7 @@ var output = document.getElementById('output');
 var roomName = document.getElementById('roomName');
 
 
-socket.emit("joinRoom", {username:username.value, roomName:roomName.value});
+socket.emit("join_room", {username:username.value, roomName:roomName.value});
 
 button.addEventListener('click', function(){
     socket.emit('chat', {
@@ -16,7 +16,7 @@ button.addEventListener('click', function(){
     });
 });
 socket.on('chat', (data) => {
-    output.innerHTML += '<p><strong>' + data.username + ':</strong>' + data.message + '</p>';
+    output.innerHTML += '<p><strong>' + data.username + ': </strong>' + data.message + '</p>';
 })
 
 socket.on('newUser', (data) => {
