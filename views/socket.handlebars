@@ -6,21 +6,20 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
     </head>
     <body>
+        <center>
         <div>
-            <div id="chat-window">
-                <div id="output">
-
+            <div>
+                <div id="output" style="word-wrap: break-word; overflow:scroll; height:400px;">
                 </div>
             </div>
-            <input id="username" type="hidden" style="white-space: pre" value="{{this.username}}" />
-            <input id="message" type="text" placeholder="Message"/>
-            <input id="roomName" type="hidden" style="white-space: pre" value="{{this.roomName}}" />
-            <button id="sendMessage" class="btn btn-primary" type="submit" autofocus="true">Send</button>
-
-            <script>
-
-            </script>
+            <form id="chat" onsubmit="return false">
+                <input id="username" type="hidden" style="white-space: pre" value="{{this.username}}" />
+                <input id="message" type="text" placeholder="Message" autofocus="true"/>
+                <input id="roomName" type="hidden" style="white-space: pre" value="{{this.roomName}}" />
+                <button id="sendMessage" class="btn btn-primary" type="submit">Send</button>
+            </form>
         </div>
+        </center>
         <script src="/connectUser.js"></script>
     </body>
 </html>
