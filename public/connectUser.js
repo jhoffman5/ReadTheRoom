@@ -18,7 +18,7 @@ button.addEventListener('click', function(){
     document.getElementById('message').value = "";
 });
 socket.on('chat', (data) => {
-    output.innerHTML += '<p><strong>' + data.username + ': </strong>' + data.message + '</p>';
+    output.innerHTML += '<p><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
 })
 
 socket.on('newUser', (data) => {
