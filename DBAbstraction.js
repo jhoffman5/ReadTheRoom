@@ -157,7 +157,10 @@ class DBAbstraction {
             const db = client.db('ReadTheRoomDB');
 
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'messages':message}});
-            if(this.getThisRoom(roomName).messages.length > 49)
+
+            const room = await db.collection('Rooms').findOne({'roomName':roomName});
+            console.log(room);
+            if(room.messages.length > 49)
             {
                 await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'messages':-1}});
             }
