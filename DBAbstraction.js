@@ -85,8 +85,10 @@ class DBAbstraction {
 
     async createRoom(roomName) {
         try{
-            const newRoom ={
-                roomName: roomName
+            var messages = [];
+            const newRoom = {
+                roomName: roomName,
+                messages: messages
             };
 
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
@@ -147,6 +149,26 @@ class DBAbstraction {
             throw err;
         }
         return room;
+    }
+
+    async insertMessageIntoRoom(roomName, message) {
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'messages':message}});
+
+            const room = await db.collection('Rooms').findOne({'roomName':roomName});
+            console.log(room);
+            if(room.messages.length > 49)
+            {
+                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'messages':-1}});
+            }
+            client.close();
+        } catch (err) {
+            console.log(`There was an error updating the message array in room ${roomName}`);
+            throw err;
+        }
     }
 }
 module.exports = DBAbstraction;

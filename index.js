@@ -51,6 +51,7 @@ io.on('connection', (socket) => {
 
     socket.on('chat', (data) => {
         io.to(data.roomName).emit('chat', data);
+        db.insertMessageIntoRoom(data.roomName, data.message);
     });
 
     socket.on('disconnect', () => {
