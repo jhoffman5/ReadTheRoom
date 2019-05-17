@@ -42,7 +42,3 @@ Stretch-goals:
 Changing passwords
 A “close room” button (instead it will close when nobody is in the room)
 
-# To-Do List
-#### Socket.io (get working chat system)
-##### Once chat can send messages, keep track of the last 50 messages for each room in the database
-##### Every 10th message will calculate the current sentiment of the room, and will change the working background color
