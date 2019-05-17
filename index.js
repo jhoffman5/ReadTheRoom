@@ -44,12 +44,22 @@ io.on('connection', (socket) => {
     console.log('New user connected');
     socket.on("join_room", (data) => {
         socket.join(data.roomName);
+        socket.id = data.username;
+        socket.roomName = data.roomName;
         socket.broadcast.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
     });
 
-    socket.on('chat', function(data) {
+    socket.on('chat', (data) => {
         io.to(data.roomName).emit('chat', data);
     });
+
+    socket.on('disconnect', () => {
+        console.log(socket.roomName);
+        var s = socket.id;
+        socket.broadcast.to(socket.roomName).emit('userLeft', "@" + s + " has disconnected from a room.");
+    });
+
+    
 });
 
 app.use(session({ secret: 'keyboard-cat'}));

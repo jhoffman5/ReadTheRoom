@@ -24,3 +24,7 @@ socket.on('chat', (data) => {
 socket.on('newUser', (data) => {
     output.innerHTML += '<p> ' + data + '</p>';
 })
+
+socket.on('userLeft', (data) => {
+    output.innerHTML += '<p> ' + data + '</p>';
+})
