@@ -86,9 +86,11 @@ class DBAbstraction {
     async createRoom(roomName) {
         try{
             var messages = [];
+            var numUsers = 0;
             const newRoom = {
                 roomName: roomName,
-                messages: messages
+                messages: messages,
+                numUsers: numUsers
             };
 
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
@@ -170,5 +172,38 @@ class DBAbstraction {
             throw err;
         }
     }
+
+    async updateRoomUsers(roomName, increase_val) {
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$inc: {'numUsers':increase_val}});
+            const numUsers = await db.collection('Rooms').findOne({'roomName':roomName});
+            console.log(numUsers);
+            client.close();
+        } catch (err) {
+            console.log(`There was an error updating the message array in room ${roomName}`);
+            throw err;
+        }
+    }
+
+    async getRoomUsers(roomName) {
+        var value;
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            const users = await db.collection('Rooms').findOne({'roomName':roomName});
+            console.log(users["numUsers"]);
+            value = users["numUsers"];
+            client.close();
+        } catch (err) {
+            console.log(`There was an error updating the message array in room ${roomName}`);
+            throw err;
+        }
+        return value;
+    }
+
 }
 module.exports = DBAbstraction;

@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
         socket.join(data.roomName);
         socket.id = data.username;
         socket.roomName = data.roomName;
+        db.updateRoomUsers(socket.roomName, 1);
         socket.broadcast.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
     });
 
@@ -55,10 +56,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        db.updateRoomUsers(socket.roomName, -1);
         socket.broadcast.to(socket.roomName).emit('userLeft', "@" + socket.id + " has disconnected from a room.");
     });
-
-    
 });
 
 app.use(session({ secret: 'keyboard-cat'}));
