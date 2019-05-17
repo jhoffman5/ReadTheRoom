@@ -52,8 +52,7 @@ io.on('connection', (socket) => {
     });
 });
 
-app.use(session({ secret: 'keyboard-cat', cookie: { maxAge: 600000 } }));
-
+app.use(session({ secret: 'keyboard-cat'}));
 
 app.get('/', async (req, res) => {
     res.render('login');
