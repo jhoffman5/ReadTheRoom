@@ -53,8 +53,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat', async (data) => {
-        var roomSentiment = sentiment.analyze(roomChatString);
-        await db.insertMessageIntoRoom(data.roomName, data.message, roomSentiment.comparative);
+        await db.insertMessageIntoRoom(data.roomName, data.message, sentiment.analyze(data.message).comparative);
         var roomMessages = await db.getRoomMessages(data.roomName);
         console.log(roomMessages);
         var roomChatString = "";
@@ -66,6 +65,7 @@ io.on('connection', (socket) => {
         console.log(roomSentiment);
 
         //data.chatColor = "blue";
+        var roomSentiment = sentiment.analyze(roomChatString);
         var roomScore = roomSentiment.comparative;
         var redVal = 0;
         var blueVal = 0;
