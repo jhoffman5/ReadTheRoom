@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat', (data) => {
-        var msgSentiment = sentiment(data.message).comparative;
+        var msgSentiment = sentiment.analyze(data.message).comparative;
         data.sentiment = msgSentiment; //TODO: calculate sentiment average
         io.to(data.roomName).emit('chat', data);
         db.insertMessageIntoRoom(data.roomName, data.message, msgSentiment);

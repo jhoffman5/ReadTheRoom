@@ -87,7 +87,7 @@ class DBAbstraction {
         try{
             var messages = [];
             var numUsers = 0;
-            var sentiment = 0;
+            var sentiments = [];
             const newRoom = {
                 roomName: roomName,
                 messages: messages,
@@ -161,7 +161,7 @@ class DBAbstraction {
             const db = client.db('ReadTheRoomDB');
 
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'messages':message}});
-            await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'sentiments':sentiment}});
+            await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'sentiments':msgSentiment}});
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
             if(room.messages.length > 50)
