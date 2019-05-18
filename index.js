@@ -52,7 +52,6 @@ io.on('connection', (socket) => {
         socket.broadcast.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
     });
 
-<<<<<<< HEAD
     socket.on('chat', async (data) => {
         await db.insertMessageIntoRoom(data.roomName, data.message);
         var roomMessages = await db.getRoomMessages(data.roomName);
@@ -88,13 +87,6 @@ io.on('connection', (socket) => {
         data.greenVal = greenVal;
         console.log(redVal, blueVal);
         io.to(data.roomName).emit('chat', data);
-=======
-    socket.on('chat', (data) => {
-        var msgSentiment = sentiment(data.message).comparative;
-        data.sentiment = msgSentiment; //TODO: calculate sentiment average
-        io.to(data.roomName).emit('chat', data);
-        db.insertMessageIntoRoom(data.roomName, data.message, msgSentiment);
->>>>>>> 96f60c568de1cd1159b5ac595f89cc3a5eed5f87
     });
 
     socket.on('disconnect', () => {

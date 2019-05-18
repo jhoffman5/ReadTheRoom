@@ -20,19 +20,7 @@ button.addEventListener('click', function(){
     document.getElementById('message').value = "";
 });
 socket.on('chat', (data) => {
-<<<<<<< HEAD
     output.innerHTML += '<p style="background-color:rgb('+ data.redVal +','+data.greenVal+','+data.blueVal+'); padding=0"><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
-=======
-    output.innerHTML += '<p><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
-    if (data.sentiment >= 0)
-    {
-        output.style.backgroundColor = "#0000" + (256*data.sentiment).toString(16);
-    }
-    else
-    {
-        output.style.backgroundColor = "#" + (-256*data.sentiment).toString(16) + "0000";
-    }
->>>>>>> 96f60c568de1cd1159b5ac595f89cc3a5eed5f87
 })
 
 socket.on('newUser', (data) => {
