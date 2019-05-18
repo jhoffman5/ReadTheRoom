@@ -52,11 +52,41 @@ io.on('connection', (socket) => {
         socket.broadcast.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
     });
 
-    socket.on('chat', (data) => {
-        var msgSentiment = sentiment.analyze(data.message).comparative;
-        data.sentiment = msgSentiment; //TODO: calculate sentiment average
+    socket.on('chat', async (data) => {
+        var roomSentiment = sentiment.analyze(roomChatString);
+        await db.insertMessageIntoRoom(data.roomName, data.message, roomSentiment.comparative);
+        var roomMessages = await db.getRoomMessages(data.roomName);
+        console.log(roomMessages);
+        var roomChatString = "";
+        for(var i = 0; i < roomMessages.length; i++)
+        {
+            roomChatString += " " + roomMessages[i];
+        }
+        console.log(roomChatString);
+        console.log(roomSentiment);
+
+        //data.chatColor = "blue";
+        var roomScore = roomSentiment.comparative;
+        var redVal = 0;
+        var blueVal = 0;
+        var greenVal = 0;
+        if(roomScore < 0)
+        {
+            redVal = 255;
+            blueVal = 255 - roomScore * -255 / 5;
+            greenVal = blueVal;
+        }
+        if(roomScore > 0)
+        {
+            blueVal = 255;
+            redVal = 255 - roomScore * 255 / 5;
+            greenVal = redVal;
+        }
+        data.redVal = redVal;
+        data.blueVal = blueVal;
+        data.greenVal = greenVal;
+        console.log(redVal, blueVal);
         io.to(data.roomName).emit('chat', data);
-        db.insertMessageIntoRoom(data.roomName, data.message, msgSentiment);
     });
 
     socket.on('disconnect', () => {
