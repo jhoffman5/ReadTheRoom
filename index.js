@@ -54,8 +54,8 @@ io.on('connection', (socket) => {
 
     socket.on('chat', (data) => {
         var msgSentiment = sentiment(data.message).comparative;
-        io.to(data.roomName).emit('chat', data);
-        db.insertMessageIntoRoom(data.roomName, data.message);
+        io.to(data.roomName).emit('chat', data); //TODO: send sentiment average
+        db.insertMessageIntoRoom(data.roomName, data.message, msgSentiment);
     });
 
     socket.on('disconnect', () => {
