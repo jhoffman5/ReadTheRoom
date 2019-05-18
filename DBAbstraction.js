@@ -163,7 +163,6 @@ class DBAbstraction {
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'messages':message}});
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
-            console.log(room);
             if(room.messages.length > 49)
             {
                 await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'messages':-1}});
@@ -173,6 +172,22 @@ class DBAbstraction {
             console.log(`There was an error updating the message array in room ${roomName}`);
             throw err;
         }
+    }
+
+    async getRoomMessages(roomName) {
+        let messages = [];
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            const room = await db.collection('Rooms').findOne({'roomName':roomName});
+            messages = room.messages;
+            client.close();
+        } catch(err){
+            console.log(`There was an error retrieving messages from room ${roomName}`);
+            throw err;
+        }
+        return messages;
     }
 
     async updateRoomUsers(roomName, increase_val) {

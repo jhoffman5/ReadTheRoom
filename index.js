@@ -5,6 +5,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passwordHash = require('password-hash');
+const Sentiment = require('sentiment');
+const sentiment = new Sentiment();
 
 const DBAbstraction = require('./DBAbstraction');
 const db = new DBAbstraction('mongodb://localhost:27017');
@@ -51,6 +53,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat', (data) => {
+        
         io.to(data.roomName).emit('chat', data);
         db.insertMessageIntoRoom(data.roomName, data.message);
     });
