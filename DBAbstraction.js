@@ -87,10 +87,12 @@ class DBAbstraction {
         try{
             var messages = [];
             var numUsers = 0;
+            var sentiment = 0;
             const newRoom = {
                 roomName: roomName,
                 messages: messages,
-                numUsers: numUsers
+                numUsers: numUsers,
+                sentiment: sentiment
             };
 
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
@@ -197,6 +199,23 @@ class DBAbstraction {
             const users = await db.collection('Rooms').findOne({'roomName':roomName});
             console.log(users["numUsers"]);
             value = users["numUsers"];
+            client.close();
+        } catch (err) {
+            console.log(`There was an error updating the message array in room ${roomName}`);
+            throw err;
+        }
+        return value;
+    }
+
+    async getRoomSentiment(roomName) {
+        var value;
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            const users = await db.collection('Rooms').findOne({'roomName':roomName});
+            console.log(users["sentiment"]);
+            value = users["sentiment"];
             client.close();
         } catch (err) {
             console.log(`There was an error updating the message array in room ${roomName}`);

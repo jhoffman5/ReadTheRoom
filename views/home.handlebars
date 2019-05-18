@@ -30,4 +30,24 @@
             <button id="newRoomButton" class="btn btn-primary">Create</button>
         </form>
     </div>
+
+    <table class="table table-bordered table-hover" style="border-collapse:collapse; width: 100%">
+        <thead style= "background-color:#FF5050">
+            <tr><th>Number of Users</th><th>Sentiment Value</th><th>Room Name</th></tr>
+        </thead>
+
+        {{#each allRooms}}
+            <tr style = "background-color:#FFA0A0">
+                <td>
+                    {{this.numUsers}}
+                </td>
+                <td>
+                    {{this.sentiment}}
+                </td>
+                <td>
+                    {{this.roomName}}
+                </td>
+            </tr>
+        {{/each}}
+    </table>
 </div>
