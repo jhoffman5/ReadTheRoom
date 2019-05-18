@@ -92,7 +92,7 @@ class DBAbstraction {
                 roomName: roomName,
                 messages: messages,
                 numUsers: numUsers,
-                sentiment: sentiment
+                sentiments: sentiments
             };
 
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
@@ -155,17 +155,26 @@ class DBAbstraction {
         return room;
     }
 
-    async insertMessageIntoRoom(roomName, message) {
+    async insertMessageIntoRoom(roomName, message, msgSentiment) {
         try {
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
             const db = client.db('ReadTheRoomDB');
 
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'messages':message}});
+            await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'sentiments':sentiment}});
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
+<<<<<<< HEAD
             if(room.messages.length > 25)
+=======
+            if(room.messages.length > 50)
+>>>>>>> 96f60c568de1cd1159b5ac595f89cc3a5eed5f87
             {
-                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'messages':-1}});
+                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
+            }
+            if(room.sentiments.length > 50)
+            {
+                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
             }
 
 
