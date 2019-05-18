@@ -123,6 +123,24 @@ class DBAbstraction {
         return allRooms;
     }
 
+    async getSortedAllRooms() {
+        let allRooms = [];
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            allRooms = await db.collection('Rooms').find().toArray();
+            allRooms.sort((a,b) => (a.numUsers < b.numUsers) ? 1 : ((b.numUsers < a.numUsers) ? -1 : 0)); 
+            //console.log(allRooms);
+            client.close();
+        } catch (err) {
+            console.log('There was an error getting all rooms');
+            throw err;
+        }
+
+        return allRooms;
+    }
+
     async getAllRoomNames() {
         let allRoomNames = [];
         let result = [];
