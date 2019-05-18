@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Read The Room</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+    </head>
+    <body>
+        <center>
+        <div>
+            <div>
+                <div id="output" style="overflow-y: scroll; border: solid black 2px; display: inline-block; overflow-x: hidden; overflow-wrap: break-word; word-wrap: break-word !important; text-align:left; height:75vh; width:100vw; vertical-align:bottom; horizontal-align:left; display:table-cell;">
+                </div>
+            </div>
+            <form id="chat" onsubmit="return false">
+                <input id="username" type="hidden" style="white-space: pre" value="{{this.username}}" />
+                <input id="message" type="text" placeholder="Message" autofocus="true"/>
+                <input id="roomName" type="hidden" style="white-space: pre" value="{{this.roomName}}" />
+                <button id="sendMessage" class="btn btn-primary" type="submit">Send</button>
+            </form>
+        </div>
+        </center>
+        <script src="/connectUser.js"></script>
+    </body>
+</html>
