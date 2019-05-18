@@ -92,7 +92,7 @@ class DBAbstraction {
                 roomName: roomName,
                 messages: messages,
                 numUsers: numUsers,
-                sentiments: sentiments
+                sentiment: sentiment
             };
 
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
