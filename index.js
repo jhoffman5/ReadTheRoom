@@ -111,7 +111,7 @@ app.get('/', async (req, res) => {
 
 app.get('/home', async (req, res) => {
     const username = req.session.username;
-    const allRooms = await db.getAllRooms();
+    const allRooms = await db.getSortedAllRooms();
     res.render('home', {username:username, allRooms:allRooms});
 });
 
