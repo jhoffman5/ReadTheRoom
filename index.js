@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('chat', (data) => {
-        
+        var msgSentiment = sentiment(data.message).comparative;
         io.to(data.roomName).emit('chat', data);
         db.insertMessageIntoRoom(data.roomName, data.message);
     });

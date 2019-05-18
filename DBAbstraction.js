@@ -155,7 +155,7 @@ class DBAbstraction {
         return room;
     }
 
-    async insertMessageIntoRoom(roomName, message) {
+    async insertMessageIntoRoom(roomName, message, msgSentiment) {
         try {
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
             const db = client.db('ReadTheRoomDB');
