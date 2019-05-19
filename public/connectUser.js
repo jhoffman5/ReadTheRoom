@@ -18,26 +18,7 @@ button.addEventListener('click', function(){
     document.getElementById('message').value = "";
 });
 socket.on('chat', (data) => {
-    output.innerHTML += '<p><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
-    if (data.sentiment >= 0)
-    {
-        var col = Math.floor(25.6*data.sentiment).toString(16);
-        while (col.length < 2)
-        {
-            col = "0"+col;
-        }
-        output.style.backgroundColor = "#0000" + col;
-    }
-    else
-    {
-        var col = Math.floor(-25.6*data.sentiment).toString(16);
-        while (col.length < 2)
-        {
-            col = "0"+col;
-        }
-        output.style.backgroundColor = "#" + col + "0000";
-    }
-    console.log(data);
+    output.innerHTML += '<p style="background-color:rgb('+ data.redVal +','+data.greenVal+','+data.blueVal+'); padding=0"><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
 })
 
 socket.on('newUser', (data) => {
