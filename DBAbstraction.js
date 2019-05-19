@@ -164,8 +164,11 @@ class DBAbstraction {
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'sentiments':msgSentiment}});
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
-
+<<<<<<< HEAD
+            if(room.messages.length > 25)
+=======
             if(room.messages.length > 50)
+>>>>>>> 96f60c568de1cd1159b5ac595f89cc3a5eed5f87
             {
                 await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
             }
