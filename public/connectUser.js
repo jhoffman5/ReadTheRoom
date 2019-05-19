@@ -1,3 +1,5 @@
+import { brotliDecompressSync } from "zlib";
+
 var socket = io.connect('http://localhost:42069');
 var message = document.getElementById('message');
 var username = document.getElementById('username');
