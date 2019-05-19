@@ -52,8 +52,15 @@ io.on('connection', (socket) => {
         socket.broadcast.to(data.roomName).emit('newUser',"@" + data.username + " has joined the room.");
     });
 
+<<<<<<< HEAD
+    socket.on('chat', (data) => {
+        var msgSentiment = sentiment.analyze(data.message).comparative;
+        data.sentiment = msgSentiment; //TODO: calculate sentiment average
+        io.to(data.roomName).emit('chat', data);
+        db.insertMessageIntoRoom(data.roomName, data.message, msgSentiment);
+=======
     socket.on('chat', async (data) => {
-        await db.insertMessageIntoRoom(data.roomName, data.message, sentiment.analyze(data.message).comparative);
+        await db.insertMessageIntoRoom(data.roomName, data.message);
         var roomMessages = await db.getRoomMessages(data.roomName);
         console.log(roomMessages);
         var roomChatString = "";
@@ -62,10 +69,10 @@ io.on('connection', (socket) => {
             roomChatString += " " + roomMessages[i];
         }
         console.log(roomChatString);
+        var roomSentiment = sentiment.analyze(roomChatString);
         console.log(roomSentiment);
 
         //data.chatColor = "blue";
-        var roomSentiment = sentiment.analyze(roomChatString);
         var roomScore = roomSentiment.comparative;
         var redVal = 0;
         var blueVal = 0;
@@ -87,6 +94,7 @@ io.on('connection', (socket) => {
         data.greenVal = greenVal;
         console.log(redVal, blueVal);
         io.to(data.roomName).emit('chat', data);
+>>>>>>> parent of 90e6650... lol
     });
 
     socket.on('disconnect', () => {

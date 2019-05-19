@@ -92,7 +92,7 @@ class DBAbstraction {
                 roomName: roomName,
                 messages: messages,
                 numUsers: numUsers,
-                sentiments: sentiments
+                sentiment: sentiment
             };
 
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
@@ -155,26 +155,25 @@ class DBAbstraction {
         return room;
     }
 
-    async insertMessageIntoRoom(roomName, message, msgSentiment) {
+    async insertMessageIntoRoom(roomName, message) {
         try {
             const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
             const db = client.db('ReadTheRoomDB');
 
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'messages':message}});
+<<<<<<< HEAD
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'sentiments':msgSentiment}});
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
-
             if(room.messages.length > 50)
-            {
-                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
-            }
-            if(room.sentiments.length > 50)
-            {
-                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
-            }
+=======
 
-
+            const room = await db.collection('Rooms').findOne({'roomName':roomName});
+            if(room.messages.length > 25)
+>>>>>>> parent of 90e6650... lol
+            {
+                await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'messages':-1}});
+            }
             client.close();
         } catch (err) {
             console.log(`There was an error updating the message array in room ${roomName}`);
@@ -190,13 +189,11 @@ class DBAbstraction {
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
             messages = room.messages;
-            //console.log(messages);
             client.close();
         } catch(err){
             console.log(`There was an error retrieving messages from room ${roomName}`);
             throw err;
         }
-        //console.log(messages);
         return messages;
     }
 
@@ -207,7 +204,7 @@ class DBAbstraction {
 
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$inc: {'numUsers':increase_val}});
             const numUsers = await db.collection('Rooms').findOne({'roomName':roomName});
-            //console.log(numUsers);
+            console.log(numUsers);
             client.close();
         } catch (err) {
             console.log(`There was an error updating the message array in room ${roomName}`);
