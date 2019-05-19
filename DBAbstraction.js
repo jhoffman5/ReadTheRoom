@@ -164,11 +164,7 @@ class DBAbstraction {
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$push: {'sentiments':msgSentiment}});
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
-<<<<<<< HEAD
-            if(room.messages.length > 25)
-=======
             if(room.messages.length > 50)
->>>>>>> 96f60c568de1cd1159b5ac595f89cc3a5eed5f87
             {
                 await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
             }
@@ -176,8 +172,6 @@ class DBAbstraction {
             {
                 await db.collection('Rooms').findOneAndUpdate({'roomName':roomName}, {$pop:{'sentiments':-1}});
             }
-
-
             client.close();
         } catch (err) {
             console.log(`There was an error updating the message array in room ${roomName}`);
@@ -193,13 +187,11 @@ class DBAbstraction {
 
             const room = await db.collection('Rooms').findOne({'roomName':roomName});
             messages = room.messages;
-            //console.log(messages);
             client.close();
         } catch(err){
             console.log(`There was an error retrieving messages from room ${roomName}`);
             throw err;
         }
-        //console.log(messages);
         return messages;
     }
 
@@ -210,7 +202,7 @@ class DBAbstraction {
 
             await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$inc: {'numUsers':increase_val}});
             const numUsers = await db.collection('Rooms').findOne({'roomName':roomName});
-            //console.log(numUsers);
+            console.log(numUsers);
             client.close();
         } catch (err) {
             console.log(`There was an error updating the message array in room ${roomName}`);
