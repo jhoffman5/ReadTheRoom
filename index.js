@@ -36,10 +36,10 @@ var numUsers = 0;
 // })
 
 
-// async function getRooms() {
-//     return await Promise.resolve(db.getAllRoomNames());
-// }
-// var rooms = getRooms();
+async function resetUsers() {
+    await Promise.resolve(db.resetUserStats());
+}
+resetUsers();
 
 io.on('connection', (socket) => {
     
@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
         }
         console.log(roomChatString);
         var roomSentiment = sentiment.analyze(roomChatString);
+        await db.updateRoomSentiment(data.roomName, roomSentiment.comparative);
         console.log(roomSentiment);
 
         //data.chatColor = "blue";

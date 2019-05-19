@@ -123,6 +123,18 @@ class DBAbstraction {
         return allRooms;
     }
 
+    async resetUserStats() {
+        try {
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+
+            await db.collection('Rooms').updateMany({}, {$set: {'numUsers': 0}})
+            client.close();
+        } catch (err) {
+            console.log('There was an error getting resetting the users.');
+        }
+    }
+
     async getSortedAllRooms() {
         let allRooms = [];
         try {
@@ -222,7 +234,23 @@ class DBAbstraction {
             //console.log(numUsers);
             client.close();
         } catch (err) {
-            console.log(`There was an error updating the message array in room ${roomName}`);
+            console.log(`There was an error updating the number of users in room ${roomName}`);
+            throw err;
+        }
+    }
+
+    async updateRoomSentiment(roomName, sentiment) {
+        try {
+            console.log("Got here");
+            const client = await MongoClient.connect(this.dbUrl, { useNewUrlParser: true });
+            const db = client.db('ReadTheRoomDB');
+            var sentimentFixed = sentiment.toFixed(3);
+            await db.collection('Rooms').findOneAndUpdate({'roomName':roomName},{$set: {'sentiment':sentimentFixed}});
+            const sentiment1 = await db.collection('Rooms').findOne({'roomName':roomName});
+            console.log(sentiment1);
+            client.close();
+        } catch (err) {
+            console.log(`There was an error updating the sentiment in room ${roomName}`);
             throw err;
         }
     }
