@@ -18,6 +18,7 @@ button.addEventListener('click', function(){
     document.getElementById('message').value = "";
 });
 socket.on('chat', (data) => {
+<<<<<<< HEAD
     output.innerHTML += '<p><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
     if (data.sentiment >= 0)
     {
@@ -38,6 +39,9 @@ socket.on('chat', (data) => {
         output.style.backgroundColor = "#" + col + "0000";
     }
     console.log(data);
+=======
+    output.innerHTML += '<p style="background-color:rgb('+ data.redVal +','+data.greenVal+','+data.blueVal+'); padding=0"><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
+>>>>>>> parent of 90e6650... lol
 })
 
 socket.on('newUser', (data) => {
