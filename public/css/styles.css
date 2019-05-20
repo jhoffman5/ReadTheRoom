@@ -1,7 +1,9 @@
 .userTitle {
-    background-color: lightgray;
+    background-color: rgb(133, 133, 133);
     text-align: left;
     padding: 20px;
+    color: white;
+    background-color: rgba(27, 27, 27, 0.842);
 }
 
 p {
