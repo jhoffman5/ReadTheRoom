@@ -36,10 +36,10 @@ var numUsers = 0;
 // })
 
 
-// async function getRooms() {
-//     return await Promise.resolve(db.getAllRoomNames());
-// }
-// var rooms = getRooms();
+async function resetUsers() {
+    await Promise.resolve(db.resetUserStats());
+}
+resetUsers();
 
 io.on('connection', (socket) => {
     
@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
         }
         console.log(roomChatString);
         var roomSentiment = sentiment.analyze(roomChatString);
+        await db.updateRoomSentiment(data.roomName, roomSentiment.comparative);
         console.log(roomSentiment);
 
         //data.chatColor = "blue";
@@ -75,6 +76,12 @@ io.on('connection', (socket) => {
             redVal = 255;
             blueVal = 255 - roomScore * -255 / 5;
             greenVal = blueVal;
+        }
+        if(roomScore == 0)
+        {
+            blueVal = 255;
+            redVal = 255;
+            greenVal = 255;
         }
         if(roomScore > 0)
         {

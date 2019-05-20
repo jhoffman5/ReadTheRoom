@@ -1,5 +1,3 @@
-import { SSL_OP_TLS_ROLLBACK_BUG } from "constants";
-
 var socket = io.connect('http://localhost:42069');
 var message = document.getElementById('message');
 var username = document.getElementById('username');
@@ -20,7 +18,7 @@ button.addEventListener('click', function(){
     document.getElementById('message').value = "";
 });
 socket.on('chat', (data) => {
-    output.innerHTML += '<p style="background-color:rgb('+ data.redVal +','+data.greenVal+','+data.blueVal+'); padding=0"><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
+    output.innerHTML += '<p style="background-color:rgb('+ data.redVal +','+data.greenVal+','+data.blueVal+'); padding=0;margin-top: -17px;"><strong>&nbsp;' + data.username + ': </strong>' + data.message + '</p>';
 })
 
 socket.on('newUser', (data) => {

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Read The Room</title>
+  <style>
+    .title {
+        background-color: black;
+        color: white;
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+        font-size: 25px;
+    }
+    .vl {
+        border-left: 6px solid black;
+        height: 500px;
+        position: absolute;
+        left: 50%;
+        margin-left: -3px;
+        top: 100;
+    }
+    * {
+      box-sizing: border-box;
+    }
+
+    .btn.btn-primary {
+      background-color:white;
+      color:black;
+      border:white;
+      margin: 10px;
+    }
+
+/* Create two equal columns that floats next to each other */
+    .column {
+      float: left;
+      width: 50%;
+      padding: 10px;
+      height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+/* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .row {
+      width: 100%;
+
+    }
+
+  </style>
+</head>  
+<body>
+
+  <div class="title"> 
+      <h2> Read The Room </h2>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6" style="background-color: rgba(0, 0, 225, .25);">
+      <form id="login">
+        <div>
+          <label for="loginUsername"> Username: </label>
+          <input type="text" class="form-control" name="loginUsername" id="loginUsername">
+        </div>
+        <div>
+          <label for="loginPassword"> Password:  </label>
+          <input type="password" class="form-control" name="loginPassword" id="loginPassword">
+        </div>
+          <button id="loginButton" onclick="submit(login)" class="btn btn-primary"> Login </button>
+      </form>
+    </div>
+
+    <div class="col-md-6" style="background-color: rgba(255, 0, 0, .25)">
+      <form id="createNewUser">
+        <div>
+          <label for="NewUsername"> Create Username: </label>
+          <input type="text" class="form-control" name="NewUsername" id="NewUsername">
+        </div>
+        <div>
+            <label for="NewPassword"> Create Password: </label>
+            <input type="password" class="form-control" name="NewPassword" id="NewPassword">
+        </div>
+          <button id="createUser" onclick="submit(createNewUser)" class="btn btn-primary"> Create </button>
+        </form>
+    </div>
+  </div>
+  
+</body>
+
+<script>
+  document.getElementById("createUser").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const NewUsername = document.getElementById("NewUsername").value;
+      const NewPassword = document.getElementById("NewPassword").value;
+
+      const userData = {
+        NewUsername : NewUsername,
+        NewPassword : NewPassword
+      };
+
+      const fetchConfigData = {
+          method: "POST",
+          body: JSON.stringify(userData), 
+          headers: {
+              "Content-Type": "application/json"
+          }
+      };
+
+      const response = await fetch("/newUser", fetchConfigData);
+
+      //just checks if everything is ok
+      if(response.ok) {
+        
+      } else {
+        console.log("Error with something in sending a new user");
+      }
+      
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
+  });
+
+  document.getElementById("loginButton").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    try {
+      const loginUsername = document.getElementById("loginUsername").value;
+      const loginPassword = document.getElementById("loginPassword").value;
+      
+      const userData = {
+        loginUsername: loginUsername,
+        loginPassword: loginPassword
+      };
+
+      const fetchConfigData = {
+          method: "POST",
+          body: JSON.stringify(userData), 
+          headers: {
+              "Content-Type": "application/json"
+          }
+      };
+
+      const response = await fetch("/loginUser", fetchConfigData);
+
+      //just checks if everything is ok
+      if(response.ok) {
+        
+      } else {
+        console.log("Error with something in sending a new user");
+      }
+      
+    } catch (err) {
+      console.log(`Error: ${err}`);
+    }
+  });
+
+  function submit(formName) {
+    document.getElementById(formName).reset();
+  }
+</script>
+
+</html>
