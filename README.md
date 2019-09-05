@@ -1,7 +1,6 @@
 # ReadTheRoom
 
 Jaxon Stout, Adam Curtis, Gavin Kaepernick, Josh Hoffman, Andrew Senkbeil, David Zikel
-(Collectively: We are Jéff)
 4/29/2019
 
 
@@ -19,26 +18,20 @@ Geoff also wishes to chat with other like-minded Jeffs and Geoffs, and logs into
 Screen by Screen specification:
 There will be 3 screens, all created in HTML with a lovely, effervescent stylesheet making it look like it should be on the cover of vogue. Each screen will have a known name with an underline
 
-# LOGIN - 
+# Login - 
 Two sides, divided down the middle. Each side will have a username and password box. The left side will have a button to create a new profile. The right side will allow the user to sign in to an existing profile. The title, “Read the Room” will be at the top center of the login page.
 When the user logs in, it checks if the name exists in the database. If it does, it will check if the password is correct, and will notify the user if neither of them work.
 When a user makes a new account, it will check to see if the username is unique, and will input the username and password into the database.
 
-# ROOM SEARCHER -
+# Room Search -
 There will be a logout button at the top left of the screen to allow the user to navigate to the login screen.
 There will be a text box in the center to search for rooms, with a drop down list containing a list of the rooms sorted by popularity. Each room will display its current sentimental color next to the room and number of people in the room. The text box will also allow a user to input their own room name, so a new room can be created.
 
 Side Note - If all goes well, some advancements might occur: sort by sentiment score
 
-# CHAT ROOM -
+# Chat Room -
 Previous messages will be displayed in a scrolling pane, and the background color of the room will be determined using sentiment analysis. The mood score of the room will be determined by passing the last 50 messages to the sentiment analysis and converting the score from a range of -5 to 5 into a red to white to blue gradient. The color will be updated in blocks of 10 messages, and will be based off of the average sentiment of the last 50 messages. Below this pane, there will be a text input field with a “submit” button and a box showing the current detected mood of the typed message labeled “Preview mood” that will change to the color gradient when clicked, so that the user can reword the message if the detected mood is incorrect.  Users will be able to see who sent each message. There will be a “back” button on the top left of the page to take the user to the Room Searcher page.
 If all users leave the room, the room will close and the sentiment and other information will be deleted.
 
 Open issue:
 Possible future advancements: displaying all users in the room
-Even further down the line if-all-goes-well advancement:  each user will display their own personal sentiment score.
-
-Stretch-goals:
-Changing passwords
-A “close room” button (instead it will close when nobody is in the room)
-
